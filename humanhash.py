@@ -7,6 +7,7 @@ functions. For tighter control over the output, see :class:`HumanHasher`.
 
 import operator
 import uuid as uuidlib
+from functools import reduce
 
 
 DEFAULT_WORDLIST = (
@@ -65,7 +66,7 @@ class HumanHasher(object):
 
     def __init__(self, wordlist=DEFAULT_WORDLIST):
         if len(wordlist) != 256:
-            raise ArgumentError("Wordlist must have exactly 256 items")
+            raise ValueError("Wordlist must have exactly 256 items")
         self.wordlist = wordlist
 
     def humanize(self, hexdigest, words=4, separator='-'):
@@ -115,7 +116,7 @@ class HumanHasher(object):
         # Split `bytes` into `target` segments.
         seg_size = length // target
         segments = [bytes[i * seg_size:(i + 1) * seg_size]
-                    for i in xrange(target)]
+                    for i in range(target)]
         # Catch any left-over bytes in the last segment.
         segments[-1].extend(bytes[target * seg_size:])
 
